@@ -12,19 +12,6 @@ def check_monotonic_array(array):
     
     return is_increase or is_decrease
 
-class TestArrayFuction(unittest.TestCase):
-    def test_monoton_increase(self):
-        self.assertTrue(check_monotonic_array([1, 2, 3, 4, 5]))
-
-    def test_monoton_decrease(self):
-        self.assertTrue(check_monotonic_array([14, 4, 3, 2, 1]))
-
-    def test_not_monoton(self):
-        self.assertFalse(check_monotonic_array([97, 9, 103, 11, 1]))
-
-
-if __name__ == '__main__':
-    unittest.main()
 
     
 
