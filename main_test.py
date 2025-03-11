@@ -12,7 +12,7 @@ class TestArrayFuction(unittest.TestCase):
     def test_not_monoton(self):
         self.assertTrue(check_monotonic_array([1, 5, 48, 30, 32, 90, 56, 100]), (False, [3, 6], [1, 2, 4, 5, 7]))
     
-    def test_not_monoton(self):
+    def test_not_monoton1(self):
         self.assertTrue(check_monotonic_array([67, 54, 48, 89, 78, 15, 14, 100]), (False, [1, 2, 4, 5, 6], [3, 7]))
 
 
