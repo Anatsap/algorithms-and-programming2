@@ -1,25 +1,22 @@
-import unittest
+import math
 
-def check_monotonic_array(array):
-    is_increase = True
-    is_decrease = True
-    n = len(array)
-    for i in range(0, n - 1):
-        if array[i] >= array[i + 1]:
-            is_increase = False
-        elif array[i] <= array[i + 1]:
-            is_decrease = False
+def get_min_side(array, n):
+    s = array[0] * array[1] * n
+    left = round(math.sqrt(s))
+    right = s
+    while left <= right:
+        side = (left + right)//2              
     
-    return is_increase or is_decrease
+        if (side // array[0]) * (side // array[1]) < n:
+            left = side + 1                
+        elif (side // array[0]) * (side // array[1]) >= n:
+            right = side - 1
+
+    return side
 
 
-    
+array = [1000000000, 999999999]
+n = 2
 
-
-
-   
-# print(check_monotonic_array([1, 2, 3, 4, 5]))
-# print(check_monotonic_array([5, 4, 3, 2, 1]))
-# print(check_monotonic_array([5, 9, 3, 2, 1]))
-# print(check_monotonic_array([5, 9, 3, 11, 1]))
-# print(check_monotonic_array([23, 56, 90, 102, 203, 290]))
+result = get_min_side(array, n)
+print("The smallest side of the square for leaves: ", str(result))
