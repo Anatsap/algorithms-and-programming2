@@ -1,6 +1,5 @@
 from queue import Queue
 
-
 class BinaryTree:
     def __init__(self, value, left=None, right=None):
         self.value = value
@@ -11,13 +10,21 @@ class BinaryTree:
 def insert(root, key):
     if root is None:
         return BinaryTree(key)
-    if root.value == key:
-        return root
-    if root.value < key:
-        root.right = insert(root.right, key)
-    else:
-        root.left = insert(root.left, key)
 
+    current = root
+    while True:
+        if key < current.value:
+            if current.left is None:
+                current.left = BinaryTree(key)
+                break
+            else:
+                current = current.left
+        elif key > current.value:
+            if current.right is None:
+                current.right = BinaryTree(key)
+                break
+            else:
+                current = current.right
     return root
 
 
@@ -39,46 +46,53 @@ def bfs(root):
 
 def is_tree_balanced(node):
     if node is None:
-        return 0
-    stack = [(node, 0)]
+        raise ValueError("Tree is empty")
 
-    dicti_height = {}
-    while stack:
-        current, depth = stack.pop()
+    stack1 = []
+    stack2 = []
+    dicti = {}
+    stack1.append(node)
+    while stack1:
+        node = stack1.pop()
+        stack2.append(node)
+        if node.left:
+            stack1.append(node.left)
+        if node.right:
+            stack1.append(node.right)
 
-        if current is not None:
-            dicti_height[current] = depth
+    while stack2:
+        h_left = 0
+        h_right = 0
 
-            stack.append((current.left, depth + 1))
-            stack.append((current.right, depth + 1))
+        node = stack2.pop()
+        if node.left is not None:
+            h_left = dicti.get(id(node.left), 0)
+        if node.right is not None:
+            h_right = dicti.get(id(node.right), 0)
 
-    stack = [node]
-
-    while stack:
-        current = stack.pop()
-
-        h_left = dicti_height.get(current.left, 0)
-        h_right = dicti_height.get(current.right, 0)
 
         if abs(h_left - h_right) > 1:
             return False
-        if current.left:
-            stack.append(current.left)
-        if current.right:
-            stack.append(current.right)
+
     return True
 
 
 with open("tree.txt", "r") as file:
-    root_value = int(file.readline().strip())
-    root = BinaryTree(root_value)
+
+    root = None
 
     for line in file:
         nodes = line.strip().split()
         for value in nodes:
-            if value != "None":
+            if value == "None":
+                continue
+            if root is None:
+                root = BinaryTree(int(value))
+            else:
                 root = insert(root, int(value))
 
 
 print("Breadth First Search: ", bfs(root))
 print("Self-balancing tree: ", is_tree_balanced(root))
+
+
