@@ -1,4 +1,5 @@
 from queue import Queue
+import os
 
 class BinaryTree:
     def __init__(self, value, left=None, right=None):
@@ -47,7 +48,6 @@ def bfs(root):
 def is_tree_balanced(node):
     if node is None:
         raise ValueError("Tree is empty")
-
     stack1 = []
     stack2 = []
     dicti = {}
@@ -75,24 +75,25 @@ def is_tree_balanced(node):
             return False
 
     return True
+file_path = "empty_tree.txt"
+if os.stat(file_path).st_size == 0:
+    print("File is empty, you can not create the tree")
+else:
+    with open(file_path, "r") as file:
+        root = None
+        for line in file:
+            nodes = line.strip().split()
+            for value in nodes:
+                if value == "None":
+                    continue
+                if root is None:
+                    root = BinaryTree(int(value))
+                else:
+                    root = insert(root, int(value))
 
-
-with open("tree.txt", "r") as file:
-
-    root = None
-
-    for line in file:
-        nodes = line.strip().split()
-        for value in nodes:
-            if value == "None":
-                continue
-            if root is None:
-                root = BinaryTree(int(value))
-            else:
-                root = insert(root, int(value))
-
-
-print("Breadth First Search: ", bfs(root))
-print("Self-balancing tree: ", is_tree_balanced(root))
-
+    if root is None:
+        print("File contains only None, you can not create the tree")
+    else:
+        print("Breadth First Search: ", bfs(root))
+        print("Self-balancing tree: ", is_tree_balanced(root))
 
