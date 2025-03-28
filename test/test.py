@@ -1,5 +1,5 @@
 import unittest
-from main import is_tree_balanced, BinaryTree
+from avl_priority_queue import is_tree_balanced, BinaryTree
 
 class TestBinaryTree(unittest.TestCase):
     def test_tree_balanced(self):
