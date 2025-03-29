@@ -1,6 +1,10 @@
+from collections import deque
+
+
 class Node:
-    def __init__(self, value):
+    def __init__(self, value, payload):
         self.value = value
+        self.payload = payload
         self.left = None
         self.right = None
         self.height = 1
@@ -20,13 +24,13 @@ class AVLTree:
             return 0
         return self.height(node.left) - self.height(node.right)
 
-    def insert(self, root, value):
+    def insert(self, root, value, payload):
         if not root:
-            return Node(value)
+            return Node(value, payload)
         elif value < root.value:
-            root.left = self.insert(root.left, value)
+            root.left = self.insert(root.left, value, payload)
         else:
-            root.right = self.insert(root.right, value)
+            root.right = self.insert(root.right, value, payload)
 
         root.height = 1 + max(self.height(root.left), self.height(root.right))
         balance = self.balance(root)
@@ -68,7 +72,7 @@ class AVLTree:
                 root = None
                 return temp
 
-            temp = self.max_value_node(root.right)
+            temp = self.min_value_node(root.right)
             root.value = temp.value
             root.right = self.delete(root.right, temp.value)
 
@@ -78,20 +82,17 @@ class AVLTree:
         root.height = 1 + max(self.height(root.left), self.height(root.right))
         balance = self.balance(root)
 
-        # Left rotation
         if balance > 1 and self.balance(root.left) >= 0:
             return self.right_rotate(root)
 
-        # Right rotation
         if balance < -1 and self.balance(root.right) <= 0:
             return self.left_rotate(root)
 
-        # Left-Right rotation
+
         if balance > 1 and self.balance(root.left) < 0:
             root.left = self.left_rotate(root.left)
             return self.right_rotate(root)
 
-        # Right-Left rotation
         if balance < -1 and self.balance(root.right) > 0:
             root.right = self.right_rotate(root.right)
             return self.left_rotate(root)
@@ -122,10 +123,10 @@ class AVLTree:
 
         return y
 
-    def max_value_node(self, root):
+    def min_value_node(self, root):
         current = root
-        while current.right:
-            current = current.right
+        while current.left:
+            current = current.left
         return current
 
     def search(self, root, value):
@@ -135,8 +136,8 @@ class AVLTree:
             return self.search(root.right, value)
         return self.search(root.left, value)
 
-    def insert_value(self, value):
-        self.root = self.insert(self.root, value)
+    def insert_value(self, value, payload):
+        self.root = self.insert(self.root, value, payload)
 
     def delete_value(self, value):
         self.root = self.delete(self.root, value)
@@ -144,33 +145,71 @@ class AVLTree:
     def search_value(self, value):
         return self.search(self.root, value)
 
+    def search_min_value(self):
+        if self.root is None:
+            return None
+        return self.min_value_node(self.root)
+
+    def get_nodes(self):
+        if self.root is None:
+            return
+        nodeStack = []
+        nodeStack.append(self.root)
+        while (len(nodeStack) > 0):
+
+            node = nodeStack.pop()
+            print(node.data, end=" ")
+            if node.right is not None:
+                nodeStack.append(node.right)
+            if node.left is not None:
+                nodeStack.append(node.left)
+
+class PriorityQueue:
+
+    def __init__(self):
+        self.tree = AVLTree()
+
+    def put(self, value, priority):
+        node = self.tree.search_value(priority)
+        if node is not None:
+            node.payload.appendleft(value)
+        else:
+            payload = deque()
+            payload.appendleft(value)
+            self.tree.insert_value(priority, payload)
+
+    def get(self):
+        node = self.tree.search_min_value()
+        if node is None:
+            raise RuntimeError("Queue is empty")
+
+        value = node.payload.pop()
+
+        if len(node.payload) == 0:
+            self.tree.delete_value(node.value)
+
+        return  value
+
+
+    def get_nodes(self):
+        for node in self.tree:
+
+            inorder.extend(list(node.payload))
+        return inorder
 
 # Example usage:
-if __name__ == "__main__":
-    tree = AVLTree()
-    tree.insert_value(10)
-    tree.insert_value(20)
-    tree.insert_value(30)
-    tree.insert_value(40)
-    tree.insert_value(50)
+if __name__ == '__main__':
+    tree = PriorityQueue()
 
-    print("Tree after insertion:")
-    def inorder_traversal(root):
-        if root:
-            inorder_traversal(root.left)
-            print(root.value),
-            inorder_traversal(root.right)
+    tree.put(30, 2)
+    tree.put(40, 1)
+    tree.put(8, 0)
+    tree.put(60, 0)
 
-    inorder_traversal(tree.root)
-    print()
+    print(tree.get())
+    print(tree.get())
+    print(tree.get())
+    print(tree.get())
+    print(tree.all_queue())
 
-    tree.delete_value(20)
-    print("Tree after deletion of 20:")
-    inorder_traversal(tree.root)
-    print()
 
-    result = tree.search_value(30)
-    if result:
-        print("Node found")
-    else:
-        print("Node not found")

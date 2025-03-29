@@ -1,14 +1,11 @@
-from queue import Queue
-
 class Node:
-    def __init__(self, priority, parent = None):
-        self.queue = Queue()
-        self.priority = priority
+    def __init__(self, value, parent = None):
+        self.value = value
         self.left = None
         self.right = None
         self.parent = parent
 
-class AVL_Priority_Queue:
+class AVL:
     def __init__(self):
         self.root = None
 
@@ -54,7 +51,6 @@ class AVL_Priority_Queue:
         b.set_right(a)
         return b
 
-        # Inside the AVLTree class
 
     def rebalance(self, node):
         if node is None:
@@ -89,13 +85,12 @@ class AVL_Priority_Queue:
                 parent.right = new_node
         self.restore_balance(new_node)
 
-        # Inside the AVLTree class
 
     def restore_balance(self, node):
         current = node
         while current is not None:
-            current.set_left(self.rebalance(current.left))
-            current.set_right(self.rebalance(current.right))
+            self.set_left(self.rebalance(current.left))
+            self.set_right(self.rebalance(current.right))
             current.update_heigth()
             current = current.parent
         self.root = self.rebalance(self.root)
@@ -103,11 +98,12 @@ class AVL_Priority_Queue:
 
 
 if __name__ == '__main__':
-    myQueue = AVL_Priority_Queue()
+    myQueue = AVL()
     myQueue.add(12)
     myQueue.add(1)
     myQueue.add(14)
     myQueue.add(7)
     print(myQueue)
-    while not myQueue.isEmpty():
-        print(myQueue.delete())
+    # while not myQueue.isEmpty():
+    #     print(myQueue.delete())
+    for node in self.tree:
