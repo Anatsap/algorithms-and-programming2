@@ -218,4 +218,3 @@ if __name__ == '__main__':
     print(tree.get())
     print(tree.all_queue())
 
-
