@@ -205,14 +205,19 @@ class AVLTree1:
 
 if __name__ == '__main__':
     nodes = AVLTree1()
+    while True:
+        u = input("Write what you want to do? ")
+        if u == "add":
+            add = input("Add id and name: ").split(",")
+            nodes.insert_id(add[0], add[1])
+        if u == "show":
+            nodes.get_nodes()
+        if u == "delt":
+            delt =input("Delete one id: ")
+            nodes.delete_id(delt[0])
+        if u == "ls":
+            # ls = input("Show me all ids and names: ")
+            nodes.get_nodes()
+            print("Tree after deletion:", nodes.get_nodes())
 
-    nodes.insert_id(4, "Anastasia")
-    nodes.insert_id(30, "Max")
-    nodes.insert_id(21, "Anna")
-    nodes.insert_id(1, "Lia")
-    nodes.insert_id(60, "Uliana")
-
-    print("Tree before deletion:", nodes.get_nodes())
-    nodes.delete_id(4)
-    print("Tree after deletion:", nodes.get_nodes())
 
