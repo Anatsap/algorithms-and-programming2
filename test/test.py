@@ -1,12 +1,12 @@
 import unittest
-from main import greedy_set_cover
+from exercise import brute_force_greedy_set_cover, parse_input
+
 
 class TestBeerFavourites(unittest.TestCase):
     def test_min_moves(self):
-        self.assertEqual(greedy_set_cover(2, {YN, NY}))
-
-    def test_min_moves1(self):
-        self.assertEqual(bfs(10, 7, 3, 0, 7), 5)
+        employers, sorts = parse_input("6 3","YNN YNY YNY NYY NYY NYN")
+        result = brute_force_greedy_set_cover(employers, sorts, 5)
+        self.assertEqual(result, 2)
 
 
 if __name__ == '__main__':
