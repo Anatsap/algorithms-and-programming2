@@ -1,36 +1,53 @@
-import os
+
+def constructLps(pat, lps):
+    len_ = 0
+    m = len(pat)
+    lps[0] = 0
+
+    i = 1
+    while i < m:
+        if pat[i] == pat[len_]:
+            len_ += 1
+            lps[i] = len_
+            i += 1
+
+        else:
+            if len_ != 0:
+                len_ = lps[len_ - 1]
+            else:
+                lps[i] = 0
+                i += 1
 
 
-def greedy_set_cover(employers, sorts):
-    uncovered = set(employers)
+def search(pat, txt):
+    n = len(txt)
+    m = len(pat)
 
-    solution = []
+    lps = [0] * m
+    res = []
+    constructLps(pat, lps)
+    i = 0
+    j = 0
 
-    while uncovered:
-        best_set = max(sorts, key=lambda s: len(s & uncovered))
-        solution.append(best_set)
-        uncovered -= best_set
-        sorts.remove(best_set)
-
-    return len(solution)
+    while i < n:
+        if txt[i] == pat[j]:
+            i += 1
+            j += 1
+            if j == m:
+                res.append(i - j)
+                j = lps[j - 1]
+        else:
+            if j != 0:
+                j = lps[j - 1]
+            else:
+                i += 1
+    return res
 
 
 if __name__ == "__main__":
-    file_path = "input.txt"
-    if os.stat(file_path).st_size == 0:
-        print("File is empty, you can not search sorts of beer")
-    else:
-        with open(file_path, "r") as file:
-            n, b = list(map(int, file.readline().strip().split()))
-            sorts = [set() for _ in range(b)]
+    txt = "aabaacaadaabaaba"
+    pat = "aaba"
 
-            favourites = list(file.readline().replace(" ", "").strip())
-            for i in range(n):
-                for j in range(b):
-                    index = i * b + j
-                    if favourites[index] == "Y":
-                        sorts[j].add(i)
-
-    employers = set(range(n))
-    result = greedy_set_cover(employers, sorts)
-    print(result)
+    res = search(pat, txt)
+    for i in range(len(res)):
+        print(res[i], end=" ")
