@@ -1,15 +1,12 @@
 import os
+from itertools import combinations
 
-def greedy_set_cover(employers, sorts):
-    uncovered = set(employers)
-    solution = []
-
-    while uncovered:
-        best_set = max(sorts, key=lambda s: len(s & uncovered))
-        solution.append(best_set)
-        uncovered -= best_set
-        sorts.remove(best_set)
-    return len(solution)
+def brute_force_set_cover(employers, sets):
+    n = len(sets)
+    for i in range(1, n + 1):
+        for subset in combinations(sets, i):
+            if set.union(*subset) == employers:
+                return len(subset)
 
 file_path = "input.txt"
 
@@ -21,12 +18,13 @@ else:
         n, b = list(map(int, file.readline().strip().split()))
         sorts = [set() for _ in range(b)]
         favourites = list(file.readline().replace(" ", "").strip())
+        print(len(favourites))
         for i in range(n):
             for j in range(b):
                 index = i * b + j
-                if favourites[index] == 'Y':
+                if favourites[index] == "Y":
                     sorts[j].add(i)
 
 employers = set(range(n))
-result = greedy_set_cover(employers, sorts)
+result = brute_force_set_cover(employers, sorts)
 print(result)
