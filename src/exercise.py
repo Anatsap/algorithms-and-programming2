@@ -1,3 +1,7 @@
+import os
+import time
+from itertools import zip_longest as zip
+
 
 def buildlps(needle, lps):
     len1 = 0
@@ -40,12 +44,24 @@ def search(needle, haystack):
             else:
                 i += 1
     return res
-
+def result(needle, haystack):
+    return search(needle, haystack)
 
 if __name__ == "__main__":
-    haystack = "bcbcaabaabcbcbb"
-    needle = "bcb"
+    file_path = "haystack.txt"
+    if os.stat(file_path).st_size == 0:
+        print("File is empty, you can not search ")
+    else:
+        with open("needle.txt") as textfile1, open("haystack.txt") as textfile2:
+            for x, y in zip(textfile1, textfile2):
+                needle = x.strip()
+                haystack = y.strip()
+                print(f"{needle}\t{haystack}")
+                result = result(needle, haystack)
+                print(result)
 
-    res = search(needle, haystack)
-    for i in range(len(res)):
-        print(res[i], end=" ")
+                new_file = "new_file.txt"
+                with open(new_file, 'w') as file:
+                    file.write("Hello, this is a test.")
+                print(f"File '{new_file}' created successfully.")
+
