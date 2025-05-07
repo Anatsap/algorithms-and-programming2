@@ -1,5 +1,4 @@
 import os
-import time
 from itertools import zip_longest as zip
 
 
@@ -57,11 +56,22 @@ if __name__ == "__main__":
                 needle = x.strip()
                 haystack = y.strip()
                 print(f"{needle}\t{haystack}")
-                result = result(needle, haystack)
-                print(result)
+                match = result(needle, haystack)
+                print(match)
+
+                final_text = []
+                text_to_delete = set()
+                for i in match:
+                    for j in range(i, i + len(needle)):
+                        text_to_delete.add(j)
+                for h in range(len(haystack)):
+                    if h not in text_to_delete:
+                        final_text.append(haystack[h])
+                    else:
+                        continue
 
                 new_file = "new_file.txt"
                 with open(new_file, 'w') as file:
-                    file.write("Hello, this is a test.")
+                    file.write("".join(final_text))
                 print(f"File '{new_file}' created successfully.")
 
