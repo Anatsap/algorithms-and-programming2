@@ -1,10 +1,10 @@
 import unittest
-from main import search
+from main import kruskals_mst
 
 
 class TestBeerFavourites(unittest.TestCase):
     def test_indexes(self):
-        result = search("bcb", "bcbcaabaabcbcbb")
+        result = kruskals_mst()
         self.assertEqual(result, [0, 9, 11])
 
 
