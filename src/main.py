@@ -44,6 +44,19 @@ class DSU:
                 self.parent[s2] = s1
                 self.rank[s1] += 1
 
+def parse_1():
+    id_well = {}
+    id_next = 0
+    edges = []
+    for row in csv_reader:
+        start_well, finish_well, distance = row
+        if start_well not in id_well:
+            id_well[start_well] = id_next
+            id_next += 1
+        if finish_well not in id_well:
+            id_well[finish_well] = id_next
+            id_next += 1
+        edges.append((id_well[start_well], id_well[finish_well], int(distance)))
 
 if __name__ == '__main__':
     with open('communication_wells.csv') as csv_file:
