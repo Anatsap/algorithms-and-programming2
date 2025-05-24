@@ -1,32 +1,21 @@
 import unittest
-from main import kruskals_mst
+from main import wire_legth
 
 
 class TestWell(unittest.TestCase):
-    def test_kruskals_mst_basic(self):
-        V = 4
-        edges = [
-            (0, 1, 1),
-            (1, 2, 2),
-            (0, 2, 3),
-            (2, 3, 4),
-            (0, 3, 5)
-        ]
-        expected_cost = 7
-        result = kruskals_mst(V, edges)
-        self.assertEqual(result, expected_cost)
+    def test_wire_length(self):
+        w =  2
+        heights_b = [3, 3, 3]
+        expected_cost = 5.66
+        result = wire_legth(w, heights_b)
+        self.assertAlmostEqual(result, expected_cost, places=2)
 
-    def test_simple_graph(self):
-        V = 4
-        edges = [
-            (0, 1, 4),
-            (1, 2, 2),
-            (0, 2, 3),
-            (2, 3, 4)
-        ]
-        result = kruskals_mst(V, edges)
-        expected_cost = 9
-        self.assertEqual(result, expected_cost)
+    def test_wire_length1(self):
+        w =  100
+        heights_b = [1, 1, 1, 1]
+        expected_cost = 300
+        result = wire_legth(w, heights_b)
+        self.assertAlmostEqual(result, expected_cost, places=2)
 
 
 if __name__ == '__main__':

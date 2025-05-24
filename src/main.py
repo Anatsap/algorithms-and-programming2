@@ -1,82 +1,23 @@
-from functools import cmp_to_key
-import csv
+from math import sqrt
 
-def comparator(a, b):
-    return a[2] - b[2];
+def wire_legth(w, heights):
+    n = len(heights)
+    max_height = max(heights)
+    dp = [[float('-inf')] * (max_height + 1) for _ in range(n)]
+    for h in range(1, heights[0] + 1):
+        dp[0][h] = 0
+    for i in range(1, n):
+        for h_i in range(1, heights[i] + 1):
+            for h_prev in range (1, heights[i-1] + 1):
+                dp[i][h_i] = max(dp[i][h_i], dp[i - 1][h_prev] + sqrt(w ** 2 + (h_i - h_prev) ** 2))
 
+    return max(dp[n - 1])
 
-def kruskals_mst(V, edges):
-    edges = sorted(edges, key=cmp_to_key(comparator))
-
-    dsu = DSU(V)
-    cost = 0
-    count = 0
-    for x, y, w in edges:
-
-        if dsu.find(x) != dsu.find(y):
-            dsu.union(x, y)
-            cost += w
-            count += 1
-            if count == V - 1:
-                break
-    return cost
+if __name__ == "__main__":
+    w = int(input())
+    heights_b = list(map(int, input().split()))
+    result_b = wire_legth(w, heights_b)
+    print(f"{result_b:.2f}")
 
 
-class DSU:
-    def __init__(self, n):
-        self.parent = list(range(n))
-        self.rank = [1] * n
 
-    def find(self, i):
-        if self.parent[i] != i:
-            self.parent[i] = self.find(self.parent[i])
-        return self.parent[i]
-
-    def union(self, x, y):
-        s1 = self.find(x)
-        s2 = self.find(y)
-        if s1 != s2:
-            if self.rank[s1] < self.rank[s2]:
-                self.parent[s1] = s2
-            elif self.rank[s1] > self.rank[s2]:
-                self.parent[s2] = s1
-            else:
-                self.parent[s2] = s1
-                self.rank[s1] += 1
-
-def parse_1():
-    id_well = {}
-    id_next = 0
-    edges = []
-    for row in csv_reader:
-        start_well, finish_well, distance = row
-        if start_well not in id_well:
-            id_well[start_well] = id_next
-            id_next += 1
-        if finish_well not in id_well:
-            id_well[finish_well] = id_next
-            id_next += 1
-        edges.append((id_well[start_well], id_well[finish_well], int(distance)))
-
-if __name__ == '__main__':
-    with open('communication_wells.csv') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        next(csv_reader)
-        id_well = {}
-        id_next = 0
-        edges = []
-        for row in csv_reader:
-            start_well, finish_well, distance = row
-            if start_well not in id_well:
-                id_well[start_well] = id_next
-                id_next += 1
-            if finish_well not in id_well:
-                id_well[finish_well] = id_next
-                id_next += 1
-            edges.append((id_well[start_well], id_well[finish_well], int(distance)))
-
-        res = kruskals_mst(len(id_well), edges)
-        if len(edges) < len(id_well) - 1:
-            print(-1)
-        else:
-            print(res)
