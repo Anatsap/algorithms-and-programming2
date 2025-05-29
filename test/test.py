@@ -17,6 +17,26 @@ class TestWell(unittest.TestCase):
         result = wire_legth(w, heights_b)
         self.assertAlmostEqual(result, expected_cost, places=2)
 
+    def test_wire_length2(self):
+        w =  4
+        heights_b = [100, 2, 100, 2, 100]
+        expected_cost = 396.32
+        result = wire_legth(w, heights_b)
+        self.assertAlmostEqual(result, expected_cost, places=2)
+
+    def test_wire_length3(self):
+        w = 4
+        heights_b = [
+            56, 18, 17, 94, 23, 7, 21, 94, 29, 54,
+            44, 26, 86, 79, 4, 15, 5, 91, 25, 17,
+            88, 66, 28, 2, 95, 97, 60, 93, 40, 70,
+            75, 48, 38, 51, 34, 52, 87, 8, 62, 77,
+            35, 52, 3, 93, 34, 57, 51, 11, 39, 72
+        ]
+        expected_cost = 2738.18
+        result = wire_legth(w, heights_b)
+        self.assertAlmostEqual(result, expected_cost, places=2)
+
 
 if __name__ == '__main__':
     unittest.main()
