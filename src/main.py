@@ -1,9 +1,7 @@
-
 def buildlps(needle, lps):
     len1 = 0
     m = len(needle)
     lps[0] = 0
-
     i = 1
     while i < m:
         if needle[i] == needle[len1]:
@@ -16,12 +14,9 @@ def buildlps(needle, lps):
             else:
                 lps[i] = 0
                 i += 1
-
-
 def search(needle, haystack):
     n = len(haystack)
     m = len(needle)
-
     lps = [0] * m
     res = []
     buildlps(needle, lps)
@@ -40,8 +35,6 @@ def search(needle, haystack):
             else:
                 i += 1
     return res
-
-
 if __name__ == "__main__":
     haystack = "bcbcaabaabcbcbb"
     needle = "bcb"
