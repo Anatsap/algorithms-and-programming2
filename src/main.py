@@ -1,5 +1,4 @@
 import os
-
 def greedy_set_cover(employers, sorts):
     uncovered = set(employers)
     solution = []
@@ -26,7 +25,6 @@ else:
                 index = i * b + j
                 if favourites[index] == 'Y':
                     sorts[j].add(i)
-
 employers = set(range(n))
 result = greedy_set_cover(employers, sorts)
 print(result)
