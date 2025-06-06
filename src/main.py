@@ -27,8 +27,6 @@ def is_tree_balanced(node):
         and is_tree_balanced(node.left)
         and is_tree_balanced(node.right)
     )
-
-
 root = BinaryTree(3)
 root.left = BinaryTree(9)
 root.right = BinaryTree(20)
