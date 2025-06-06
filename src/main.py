@@ -15,7 +15,7 @@ def get_min_side(array, n):
         count += 1
     print(count)
 
-    return side
+    return left
 
 
 array = [1000000000, 999999999]
